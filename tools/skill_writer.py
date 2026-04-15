@@ -15,6 +15,17 @@ from pathlib import Path
 from datetime import datetime
 
 
+SKILL_ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_BASE_DIR = SKILL_ROOT / 'selves'
+
+
+def resolve_base_dir(base_dir: str) -> str:
+    path = Path(base_dir).expanduser()
+    if not path.is_absolute():
+        path = SKILL_ROOT / path
+    return str(path.resolve())
+
+
 def list_skills(base_dir: str):
     """列出所有已生成的自我 Skill"""
     if not os.path.isdir(base_dir):
@@ -44,7 +55,7 @@ def list_skills(base_dir: str):
         profile = s['profile']
         desc_parts = [profile.get('occupation', ''), profile.get('city', '')]
         desc = ' · '.join([p for p in desc_parts if p])
-        print(f"  /{s['slug']}  —  {s['name']}")
+        print(f"  ${s['slug']}  —  {s['name']}")
         if desc:
             print(f"    {desc}")
         print(f"    版本 {s['version']} · 更新于 {s['updated_at'][:10] if len(s['updated_at']) > 10 else s['updated_at']}")
@@ -167,19 +178,20 @@ def create_skill(base_dir: str, slug: str, meta: dict, self_content: str, person
 
     combine_skill(base_dir, slug)
     print(f"✅ Skill 已创建：{skill_dir}")
-    print(f"   触发词：/{slug}")
+    print(f"   触发词：${slug}")
 
 
 def main():
     parser = argparse.ArgumentParser(description='Skill 文件管理器')
     parser.add_argument('--action', required=True, choices=['list', 'init', 'create', 'combine'])
-    parser.add_argument('--base-dir', default='./.claude/skills', help='基础目录（默认：./.claude/skills）')
+    parser.add_argument('--base-dir', default=str(DEFAULT_BASE_DIR), help='基础目录（默认：skill 根目录下的 selves/）')
     parser.add_argument('--slug', help='自我代号')
     parser.add_argument('--meta', help='meta.json 文件路径（create 时使用）')
     parser.add_argument('--self', help='self.md 内容文件路径（create 时使用）')
     parser.add_argument('--persona', help='persona.md 内容文件路径（create 时使用）')
 
     args = parser.parse_args()
+    args.base_dir = resolve_base_dir(args.base_dir)
 
     if args.action == 'list':
         list_skills(args.base_dir)

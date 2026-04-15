@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://python.org)
-[![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-blueviolet)](https://claude.ai/code)
+[![Codex](https://img.shields.io/badge/Codex-Skill-blueviolet)](https://openai.com/codex/)
 [![AgentSkills](https://img.shields.io/badge/AgentSkills-Standard-green)](https://agentskills.io)
 
 <br>
@@ -32,18 +32,16 @@ Generate a digital replica that thinks with your catchphrases and replies with y
 
 ## Installation
 
-### Claude Code
+### Codex
 
-> **Important**: Claude Code looks for skills in `.claude/skills/` from the **git repo root**. Run these commands in the correct location.
+> **Important**: Codex looks for skills in `$CODEX_HOME/skills`; when `CODEX_HOME` is unset, use `~/.codex/skills/`. Install this repo into that global skills directory.
 
 ```bash
-# Install in current project
-mkdir -p .claude/skills
-git clone https://github.com/YOUR_USERNAME/yourself-skill .claude/skills/create-yourself
-
-# Or install globally (available in all projects)
-git clone https://github.com/YOUR_USERNAME/yourself-skill ~/.claude/skills/create-yourself
+# Global install (recommended)
+git clone https://github.com/notdog1998/yourself-skill ~/.codex/skills/create-yourself
 ```
+
+Generated self skills are written to `~/.codex/skills/create-yourself/selves/` and are auto-discovered by Codex as nested skills.
 
 ### Dependencies (Optional)
 
@@ -55,26 +53,25 @@ pip install -r requirements.txt
 
 ## Usage
 
-In Claude Code, type:
+In Codex, type:
 
 ```
-/create-yourself
+$create-yourself
 ```
 
 Follow the prompts to enter your alias, basic info, and self-portrait, then choose your data sources. All fields are skippable—descriptions alone are enough to generate a skill.
 
-After creation, invoke it with `/{slug}` to start talking.
+After creation, invoke it with `$slug` to start talking.
 
-### Management Commands
+### Management
 
-| Command | Description |
-|---------|-------------|
-| `/list-selves` | List all self Skills |
-| `/{slug}` | Full Skill (think and speak like you) |
-| `/{slug}-self` | Self-archive mode (recall and analyze yourself) |
-| `/{slug}-persona` | Persona mode (personality and expression only) |
-| `/yourself-rollback {slug} {version}` | Rollback to a previous version |
-| `/delete-yourself {slug}` | Delete |
+| Input | Description |
+|-------|-------------|
+| `$create-yourself list my self skills` | List all self skills |
+| `$slug` | Full skill (think and speak like you) |
+| `$create-yourself append files to {slug}` | Add new material and update |
+| `$create-yourself rollback {slug} to {version}` | Roll back to a previous version |
+| `$create-yourself delete {slug}` | Delete |
 
 ---
 
@@ -176,7 +173,7 @@ create-yourself/
 │   ├── photo_analyzer.py       # Photo EXIF analyzer
 │   ├── skill_writer.py         # Skill file manager
 │   └── version_manager.py      # Version archive & rollback
-├── .claude/skills/{slug}/      # Generated self Skills (invocable)
+├── selves/{slug}/              # Generated self Skills (invocable nested skills)
 ├── docs/PRD.md
 ├── requirements.txt
 └── LICENSE
@@ -213,7 +210,7 @@ This project's architectural inspiration comes from:
 
 Yourself.skill turns the lens inward: the subject is no longer someone else, but **you**. Thanks to both original authors for their creativity and open-source spirit.
 
-This project follows the [AgentSkills](https://agentskills.io) open standard, compatible with Claude Code and OpenClaw.
+This project follows the [AgentSkills](https://agentskills.io) open standard, works well in Codex, and can be adapted to other compatible environments.
 
 ---
 
