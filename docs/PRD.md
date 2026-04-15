@@ -2,7 +2,7 @@
 
 ## 产品定位
 
-自己.skill 是一个运行在 Claude Code 上的 meta-skill。
+自己.skill 是一个运行在 Codex 上的 meta-skill。
 用户提供关于自己的原材料（聊天记录、日记、照片、口述），系统将用户解构为两个可运行的模块：
 **Part A — Self Memory（自我记忆）** 与 **Part B — Persona（人格模型）**，
 最终生成一个可独立对话的**数字生命副本**。
@@ -53,7 +53,7 @@ Part A（Self Memory）补充：结合你的价值观、经历、习惯，让回
 ## 用户旅程
 
 ```
-用户触发 /create-yourself
+用户触发 $create-yourself
   ↓
 [Step 1] 基础信息录入（3个问题，除代号外均可跳过）
   - 代号/昵称
@@ -75,7 +75,7 @@ Part A（Self Memory）补充：结合你的价值观、经历、习惯，让回
   - 用户可直接确认或修改
   ↓
 [Step 5] 写入文件，立即可用
-  - 生成 .claude/skills/{slug}/ 目录
+  - 生成 selves/{slug}/ 目录
   - 包含 SKILL.md（完整组合版）
   - 包含 self.md 和 persona.md（独立部分）
   ↓
@@ -242,7 +242,7 @@ Layer 5 — Correction 层（对话纠正追加，滚动更新）
 ### 版本管理
 
 - 每次更新自动存档当前版本到 `versions/`
-- 支持 `/yourself-rollback {slug} {version}` 回滚
+- 支持通过 `create-yourself` skill 回滚到指定版本
 - 保留最近 10 个版本
 
 ---
@@ -253,7 +253,7 @@ Layer 5 — Correction 层（对话纠正追加，滚动更新）
 create-yourself/                    # meta-skill
 │
 ├── SKILL.md                         # 主入口
-│                                    # 触发词: /create-yourself
+│                                    # 触发词: $create-yourself
 │
 ├── prompts/                         # Prompt 模板
 │   ├── intake.md                    # 引导录入
@@ -272,7 +272,7 @@ create-yourself/                    # meta-skill
 │   ├── skill_writer.py              # 文件管理
 │   └── version_manager.py           # 版本管理
 │
-.claude/skills/{slug}/              # 生成的自我 Skill（可直接运行）
+selves/{slug}/                      # 生成的自我 Skill（可直接运行）
 │       ├── SKILL.md                 # 完整组合版
 │       ├── self.md                  # Part A：自我记忆
 │       ├── persona.md               # Part B：人格
@@ -292,7 +292,7 @@ create-yourself/                    # meta-skill
 
 ## 关键文件格式
 
-### `.claude/skills/{slug}/meta.json`
+### `selves/{slug}/meta.json`
 
 ```json
 {
@@ -323,7 +323,7 @@ create-yourself/                    # meta-skill
 }
 ```
 
-### `.claude/skills/{slug}/SKILL.md` 结构
+### `selves/{slug}/SKILL.md` 结构
 
 ```markdown
 ---
@@ -382,6 +382,4 @@ user-invocable: true
 - [x] `prompts/merger.md`
 
 ### P3 — 管理功能
-- [x] `/list-selves`
-- [x] `/yourself-rollback`
-- [x] `/delete-yourself`
+- [x] 通过 `create-yourself` skill 列表 / 回滚 / 删除

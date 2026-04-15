@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://python.org)
-[![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-blueviolet)](https://claude.ai/code)
+[![Codex](https://img.shields.io/badge/Codex-Skill-blueviolet)](https://openai.com/codex/)
 [![AgentSkills](https://img.shields.io/badge/AgentSkills-Standard-green)](https://agentskills.io)
 
 <br>
@@ -32,18 +32,16 @@
 
 ## 安装
 
-### Claude Code
+### Codex
 
-> **重要**：Claude Code 从 **git 仓库根目录** 的 `.claude/skills/` 查找 skill。请在正确的位置执行。
+> **重要**：Codex 默认从 `$CODEX_HOME/skills` 查找 skill；如果 `CODEX_HOME` 未设置，则使用 `~/.codex/skills/`。推荐直接安装到全局技能目录。
 
 ```bash
-# 安装到当前项目（在 git 仓库根目录执行）
-mkdir -p .claude/skills
-git clone https://github.com/notdog1998/yourself-skill .claude/skills/create-yourself
-
-# 或安装到全局（所有项目都能用）
-git clone https://github.com/notdog1998/yourself-skill ~/.claude/skills/create-yourself
+# 全局安装（推荐）
+git clone https://github.com/notdog1998/yourself-skill ~/.codex/skills/create-yourself
 ```
+
+生成的自我 Skill 会写入 `~/.codex/skills/create-yourself/selves/`，并可直接作为嵌套 skill 被 Codex 识别。
 
 ### 依赖（可选）
 
@@ -55,26 +53,25 @@ pip install -r requirements.txt
 
 ## 使用
 
-在 Claude Code 中输入：
+在 Codex 中输入：
 
 ```
-/create-yourself
+$create-yourself
 ```
 
 按提示输入你的代号、基本信息、自我画像，然后选择数据来源。所有字段均可跳过，仅凭描述也能生成。
 
-完成后用 `/{slug}` 调用该自我 Skill，开始对话。
+完成后用 `$slug` 调用该自我 Skill，开始对话。
 
-### 管理命令
+### 管理方式
 
-| 命令 | 说明 |
+| 输入 | 说明 |
 |------|------|
-| `/list-selves` | 列出所有自我 Skill |
-| `/{slug}` | 调用完整 Skill（像你一样思考和说话） |
-| `/{slug}-self` | 自我档案模式（帮你回忆和分析自己） |
-| `/{slug}-persona` | 人格模式（仅性格和表达风格） |
-| `/yourself-rollback {slug} {version}` | 回滚到历史版本 |
-| `/delete-yourself {slug}` | 删除 |
+| `$create-yourself 列出已有 self skills` | 列出所有自我 Skill |
+| `$slug` | 调用完整 Skill（像你一样思考和说话） |
+| `$create-yourself 给 {slug} 追加文件` | 追加新材料并更新 |
+| `$create-yourself 回滚 {slug} 到 {version}` | 回滚到历史版本 |
+| `$create-yourself 删除 {slug}` | 删除 |
 
 ---
 
@@ -224,7 +221,7 @@ create-yourself/
 
 自己.skill 在此基础上将视角内转：对象不再是他人，而是你自己。致敬两位原作者的创意和开源精神。
 
-本项目遵循 [AgentSkills](https://agentskills.io) 开放标准，兼容 Claude Code 和 OpenClaw。
+本项目遵循 [AgentSkills](https://agentskills.io) 开放标准，适用于 Codex，也便于迁移到其他兼容环境。
 
 ---
 

@@ -10,7 +10,19 @@ import os
 import sys
 import shutil
 import json
+from pathlib import Path
 from datetime import datetime
+
+
+SKILL_ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_BASE_DIR = SKILL_ROOT / 'selves'
+
+
+def resolve_base_dir(base_dir: str) -> str:
+    path = Path(base_dir).expanduser()
+    if not path.is_absolute():
+        path = SKILL_ROOT / path
+    return str(path.resolve())
 
 
 def backup(base_dir: str, slug: str):
@@ -95,10 +107,11 @@ def main():
     parser = argparse.ArgumentParser(description='版本管理器')
     parser.add_argument('--action', required=True, choices=['backup', 'rollback', 'list'])
     parser.add_argument('--slug', required=True, help='自我代号')
-    parser.add_argument('--base-dir', default='./.claude/skills', help='基础目录（默认：./.claude/skills）')
+    parser.add_argument('--base-dir', default=str(DEFAULT_BASE_DIR), help='基础目录（默认：skill 根目录下的 selves/）')
     parser.add_argument('--version', help='回滚目标版本')
 
     args = parser.parse_args()
+    args.base_dir = resolve_base_dir(args.base_dir)
 
     if args.action == 'backup':
         backup(args.base_dir, args.slug)
